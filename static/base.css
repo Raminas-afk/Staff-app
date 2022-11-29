@@ -1,0 +1,15 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+.container-fluid{
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+.container {
+    background-color: #1f2f60;
+}
+

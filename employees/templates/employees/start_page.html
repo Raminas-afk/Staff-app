@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Main Page {% endblock %}
+
+{% block css_files  %} 
+<link rel="stylesheet" href="{% static "employees/start_page.css" %}">
+{% endblock %}
+
+
+{% block content %}
+<div class='container-fluid'>
+<h1>Welcome to the staff app</h1>
+<h2>This a start page, not a log in page </h2>
+</div>
+
+
+{% endblock %}

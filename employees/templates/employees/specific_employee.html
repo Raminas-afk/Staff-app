@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css_files  %} 
+<link rel="stylesheet" href="{% static "employees/form.css" %}">
+{% endblock %}
+
+{% block content %}
+<div class='container-fluid'>
+    <div class='container'>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Salary</th>
+                    <th>Working Since</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>{{employee.first_name}} {{employee.last_name}}</td>
+                <td>{{employee.email}}</td>
+                <td>{{employee.department}}</td>
+                <td>{{employee.salary}}</td>
+                <td>{{employee.working_since}}</td>
+                {% if employe.employee_picture %}
+                <td><img src="{{employee.employee_picture.url}}"></td>
+                {% endif %}
+            </tr>
+        </table>
+    </div>
+    <a href="{% url 'employee-list' %}"><button class="btn btn-primary" type="submit">Back to employee list</button></a> 
+
+</div>
+{% endblock %}

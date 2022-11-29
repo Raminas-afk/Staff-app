@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Main Page {% endblock %}
+
+{% block css_files  %} 
+<link rel="stylesheet" href="{% static "employees/start_page.css" %}">
+<link rel="stylesheet" href="{% static "employees/form.css" %}">
+
+{% endblock %}
+
+
+{% block content %}
+<div class='container-fluid'>
+<h1>Welcome to the staff app</h1>
+<h2> Login below </h2>
+
+
+
+<div class='container'>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+        </table>
+        
+        {% comment %} <input type="submit" value="login">                   old button         {% endcomment %}
+        <button type="submit" class="btn btn-primary">Log in</button>
+        {% comment %} <input type="hidden" name="next" value="{{ next }}">   whats the point ???                {% endcomment %}
+    </form>
+    {{message}}
+
+</div>
+
+</div>
+{% endblock %}

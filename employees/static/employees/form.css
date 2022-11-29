@@ -1,0 +1,20 @@
+.container {
+    width: fit-content;
+    background-color: rgba(53, 64, 160, 0.497);
+    border-radius: 1rem;
+    padding: 3rem;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 35px 0;
+}
+
+
+td {
+    padding: 10px 0;
+}
+
+.btn-submit {
+    margin-top: 30px;
+}
