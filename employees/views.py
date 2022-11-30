@@ -4,6 +4,10 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView, D
 from .models import Employee
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import EmployeeSerializer
 # Create your views here.
 
 
@@ -13,12 +17,6 @@ class EmployeeListView(LoginRequiredMixin, ListView):
     template_name = "employees/employee_list.html"
     model = Employee
     context_object_name = "employees_list"
-    
-    # def get(self, request):
-    #     employee_list = Employee.objects.all()``
-    #     return render(request, "staff_app/employee_list.html", {
-    #         "list": employee_list
-    #     })
 
 class SpecificEmployeeView(LoginRequiredMixin, DetailView):
     login_url = 'user/login_user'
@@ -41,31 +39,7 @@ class AddNewEmployeeView(LoginRequiredMixin, CreateView):
     success_url = "/"
 
 
-    # def get(self, request):
-    #     form = NewEmployeeForm()
-        
-    #     return render(request, "staff_app/new_employee.html", {
-    #         "form": form,
-    #     })
-    
-    # def post(self, request):
-    #     form = NewEmployeeForm(request.POST)
-
-    #     if form.is_valid():
-    #         success_text = "New employee added successfully!"
-    #         form.save()
-            
-    #         return render(request, 'staff_app/new_employee.html', {
-                
-    #             "success": success_text,
-    #             "form": form
-    #         })
-        
-    #     else:   
-    #         return render(request, "staff_app/new_employee.html", {
-    #         "form": form
-    #         })
-       
+ 
 class EditEmployeeView(LoginRequiredMixin, UpdateView):
     login_url = 'user/login_user'
     redirect_field_name = '/'
@@ -74,25 +48,6 @@ class EditEmployeeView(LoginRequiredMixin, UpdateView):
     template_name = "employees/edit_employee.html"
     success_url = "/"
 
-    # def get(self, request, id):
-    #     edited_employee = Employee.objects.get(pk=id)
-    #     form = NewEmployeeForm(instance=edited_employee)
-    #     return render(request, "staff_app/edit_employee.html", {
-    #     "form": form
-    #     })
-    
-    # def post(self, request, id):
-    #     form = NewEmployeeForm(instance=Employee.objects.get(pk=id))
-    #     if form.is_valid():
-    #         success_text = "Employee edited successfully!"
-    #         form.save()
-    #         return render(request, "staff_app/edit_employee.html", {
-    #         "form": form,
-    #         "success": success_text,
-    #         "employee": edited_employee
-    #         })
-    #     else:
-    #         pass
 
 class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
     login_url = 'user/login_user'
@@ -100,34 +55,6 @@ class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
     model=Employee
     success_url = "/"
 
-# def DeleteEmployee(request, id):
-#     if request.method == "POST":
-#         deleted_employee = Employee.objects.get(id=id)
-#         deleted_employee.delete()
-#         return redirect("employee-list")
-
-# class DepartmentListView(LoginRequiredMixin, ListView, pk=pk):
-#     login_url = 'user/login_user'
-#     redirect_field_name = '/'
-#     template_name = "employees/management_list.html"
-#     model = Employee
-#     # context_object_name = "management_list"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         employees = Employee.objects.filter(department=1)
-#         context["management"] = employees
-#         return context
-
-# class DepartmentListView(LoginRequiredMixin, View):
-#     login_url = 'user/login_user'
-#     redirect_field_name = '/'
-   
-#     def get(self, request, id):
-#         department_employees = Employee.objects.filter(department=id)
-#         return render(request, "employees/department_list.html", {
-#             "department": department_employees
-#         })
 
 @login_required(login_url="/user/login_user")
 def DepartmentList(request, department):
@@ -140,3 +67,8 @@ def DepartmentList(request, department):
 
 
         #1 management 2 hr 3 accounting 5 logistics 6 warehouse
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    permission_classes = [permissions.IsAuthenticated]
