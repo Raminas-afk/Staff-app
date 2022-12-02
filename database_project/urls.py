@@ -7,14 +7,16 @@ from employees import views
 
 
 router = routers.DefaultRouter()
-router.register(r'employees', views.EmployeeViewSet)
+# router.register(r'employees', views.EmployeeViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("employees.urls")),
     path('user/', include('django.contrib.auth.urls')),
     path('user/', include("authentication.urls")),
-    path('api', include(router.urls)),
+    path('api/', include(router.urls)),
+    path('api/employees/', views.employee_list_api),
+    path('api/employees/<int:id>', views.specific_employee_api),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
     ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)         for file uploads, disabled for now
 
