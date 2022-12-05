@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Employee
-from .forms import NewEmployeeForm
+from .models import Employee, Event
+from .forms import NewEmployeeForm, NewEventForm
 
 from rest_framework import viewsets
 from rest_framework import status
@@ -44,7 +44,13 @@ class AddNewEmployeeView(LoginRequiredMixin, CreateView):
     template_name = "employees/new_employee.html"
     success_url = "/"
 
-
+class AddNewEventView(LoginRequiredMixin, CreateView):
+    login_url = 'user/login_user'
+    redirect_field_name = '/'
+    model = Event
+    form_class = NewEventForm
+    template_name = "employees/new_event.html"
+    success_url = "/"
  
 class EditEmployeeView(LoginRequiredMixin, UpdateView):
     login_url = 'user/login_user'
@@ -65,14 +71,50 @@ class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
 @login_required(login_url="/user/login_user")
 def department_list(request, department):
     if request.method == "GET":
-        department_employees = Employee.objects.filter(department=department)
+        department_employees = Employee.objects.filter(department__name=department)
         return render(request, "employees/department_list.html", {
         "employees": department_employees,
         "department": department
         })
 
-
+@login_required(login_url="/user/login_user")
+def event_list(request):
+    if request.method == "GET":
+        events = Event.objects.all()
+        return render(request, "employees/event_list.html", {
+            "events": events
+        })
         #1 management 2 hr 3 accounting 5 logistics 6 warehouse
+
+class AddNewEventView(LoginRequiredMixin, CreateView):
+    login_url = 'user/login_user'
+    redirect_field_name = '/'
+    model = Event
+    form_class = NewEventForm
+    template_name = "employees/new_event.html"
+    success_url = "/events"
+
+class EditEventView(LoginRequiredMixin, UpdateView):
+    login_url = 'user/login_user'
+    redirect_field_name = '/'
+    model = Event
+    fields = "__all__"
+    template_name = "employees/edit_event.html"
+    success_url = "/events"
+
+class DeleteEventView(LoginRequiredMixin, DeleteView):
+    login_url = 'user/login_user'
+    redirect_field_name = '/'
+    model=Event
+    success_url = "/events"
+
+class SpecificEventView(LoginRequiredMixin, DetailView):
+    login_url = 'user/login_user'
+    redirect_field_name = '/'
+    template_name = "employees/specific_event.html"
+    model = Event
+    context_object_name= "event"
+    
 
 
 # Serializer ViewSets
@@ -115,3 +157,4 @@ def specific_employee_api(request, id):
     elif request.method == "DELETE":
         employee.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+

@@ -1,5 +1,5 @@
 __pycache__/
 uploads/
 env/
-db.sqlite3
+*db.sqlite3
 

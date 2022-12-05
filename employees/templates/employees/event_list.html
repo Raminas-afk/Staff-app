@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %} Event list {% endblock %}
+
+{% block css_files %} 
+<link rel="stylesheet" href="{% static "employees/form.css" %}">
+{% endblock %}
+
+{% block content %}
+
+<div class='container-fluid'>
+<h1>Planned event list</h1>
+<div class='container'>
+    <table>
+    <thead>
+        <tr>
+            <th>Event name</th>
+            <th>Attending department</th>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+        {% for event in events %}
+        <tr>
+            <td>{{event.name}}</td>
+            <td>{{event.attending_department}}</td>
+            <td>{{event.date}}</td>
+            <td>{{event.time}}</td>
+            <form action="{% url "edit-event" event.id %}" method="GET">
+                <td><button type="submit" class="btn btn-outline-warning">Edit</button></td>
+            </form>
+            <form action="{% url "delete-event" event.id %}" method="POST">
+                {% csrf_token %}
+                <td><button type="submit" class="btn btn-outline-danger">Delete</button></td>
+            </form>
+            <form action="{% url "specific-event" event.id %}" method="GET">
+                <td><button type="submit" class="btn btn-outline-info">More Info</button></td>
+            </form>
+        </tr>
+        
+        {% endfor %}
+    </table>
+
+</div>
+<a href="{% url 'new-event' %}"><button class="btn btn-primary" type="submit">New event</button></a> <br><br>
+
+
+<a href="{% url 'employee-list' %}"><button class="btn btn-primary" type="submit">Back to employee list</button></a> 
+
+</div>
+
+{% endblock %}
